@@ -1,0 +1,20 @@
+public class InmediatoMayor {
+	
+	public int inmediatoMayor(ArbolBinarioDeBusqueda<Integer> A, Integer valorBuscado){
+		
+		if (!A.esVacio()){
+			
+			if (A.getDatoRaiz() == valorBuscado){
+				if (!A.getHijoDerecho().esVacio()){
+					return A.getHijoDerecho().getDatoRaiz();
+				}
+			}
+			//proceso hijo izquierdo
+			this.inmediatoMayor(A.getHijoIzquierdo(), valorBuscado);
+			//proceso hijo derecho
+			this.inmediatoMayor(A.getHijoDerecho(), valorBuscado);
+			
+		}
+	}
+
+}
