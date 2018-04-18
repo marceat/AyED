@@ -1,18 +1,45 @@
-public class InmediatoMayor {
+public class InmediatoMayor2 {
+	
+	static boolean encontro = true;
 	
 	public int inmediatoMayor(ArbolBinarioDeBusqueda<Integer> A, Integer valorBuscado){
 		
-		if (!A.esVacio()){
+		if (!A.esVacio() && encontro == true){
 			
 			if (A.getDatoRaiz() == valorBuscado){
 				if (!A.getHijoDerecho().esVacio()){
 					return A.getHijoDerecho().getDatoRaiz();
+				} else {
+					return -1;
+				}		
+				
+			else { 
+				if (!A.getHijoIzquierdo().esVacio()){
+					if (A.getHijoIzquierdo().getDatoRaiz() == valorBuscado){
+						return A.getDatoRaiz();
+					}
+				}
+				else {
+				
+					if (!A.getHijoDerecho().esVacio()){
+						if (!A.getHijoDerecho().getDatoRaiz() == valorBuscado){
+							this.inmediatoMayor(A.getHijoDerecho(), valorBuscado);
+						}
+					} else {
+						encontro = false;
+					}
 				}
 			}
-			//proceso hijo izquierdo
-			this.inmediatoMayor(A.getHijoIzquierdo(), valorBuscado);
-			//proceso hijo derecho
-			this.inmediatoMayor(A.getHijoDerecho(), valorBuscado);
+		}
+			
+		}
+		if (encontro == false) {
+			encontro = true;
+			if (valorBuscado < A.getDatoRaiz()){
+				this.inmediatoMayor(A.getHijoIzquierdo(), valorBuscado);
+			} else {
+				this.inmediatoMayor(A.getHijoDerecho(), valorBuscado);
+			}
 			
 		}
 	}
