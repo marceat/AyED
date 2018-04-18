@@ -1,0 +1,60 @@
+
+// IMPORTANTE: importar clases ColaGenerica, ListaGenerica, ListaGenericaEnlazada.
+
+
+
+public class ProfundidadDeArbolBinario {
+	ArbolBinario<Integer> arbol;
+	
+	
+	//éste ejercicio es parecido al ejercicio 2 inciso C. LA diferencia es que aquí, es vez de leer elementos del arbol,
+	//cuando cambie de nivel, sumar 1 al nivel actuar y guardar los elementos en la cola, y luego imprimir sólo los
+	//elementos que estén entre los niveles pedidos, aquí solamente cambiamos esa condicion y le decimos que imprima
+	//solamente cuando nivel actual sea IGUAL al nivel pedido, y sume todos los elementos del nivel pedido en una variable
+	//sumaTotal, que luego devolveremos con un return (por eso el método es de tipo int).
+	
+	
+	public int sumaElementosProfundidad(int nivel){
+		
+		int nivelActual = 0;
+		int sumaTotal=0;
+		//ArbolBinario<Integer> arbol = null;
+		ColaGenerica<ArbolBinario<Integer>> cola = new ColaGenerica<ArbolBinario<Integer>>();
+		cola.encolar(arbol);
+		cola.encolar(null);
+		
+		while (!cola.esVacia()) {
+			arbol = cola.desencolar();
+			
+			//si detecto un cambio de nivel en el arbol, sumo 1 al nivel actual
+			//cada vez que la cola detecta un null, es decir, un cambio de nivel en el arbol.
+			if (arbol == null) {
+				nivelActual++;	
+				if (!cola.esVacia()) {
+					System.out.println();
+					cola.encolar(null);
+				}
+			}	
+			if (arbol != null) {
+				
+				//si nivel actual es igual al nivel pedido, imprimo todos sus elementos de la cola
+				//hasta que cambie el arbol de nivel.
+				if ((nivelActual == nivel)){
+					System.out.println(arbol.getDatoRaiz());
+					sumaTotal = sumaTotal + arbol.getDatoRaiz();
+				}
+				//si no está, de igual modo sigo recorriendo el arbol
+				//y agregando elementos a la cola
+				if (!arbol.getHijoIzquierdo().esVacio()){
+					cola.encolar(arbol.getHijoIzquierdo());
+				}
+				if (!arbol.getHijoDerecho().esVacio()){
+					cola.encolar(arbol.getHijoDerecho());
+				}	
+			}
+		}
+		return sumaTotal;
+	}
+	
+	
+}
