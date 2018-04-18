@@ -1,0 +1,28 @@
+
+// IMPORTANTE: importar clases --> listaGenericaEnlazada, NodoGenerico
+
+
+
+public class Recorrido{
+	
+	public ListaEnlazadaGenerica<Integer> caminoRecorrido (ListaEnlazadaGenerica L, ArbolBinarioDeBusqueda<Integer> A, Integer valor){
+		
+		if(!A.esVacio()){
+			
+			//si el valor es mayor a la raiz, guardo el valor del nodo en la lista
+			//y busco por la derecha,.
+			if(valor > A.getDatoRaiz()){
+				L.agregarFinal(A.getDatoRaiz());
+				this.caminoRecorrido(L, A.getHijoDerecho(), valor);
+				}
+			
+			//sinó (el valor es menor a la raiz), guardo el valor del nodo en la lista
+			//en negativo (lo multiplico por -1), y avanzo por la izquierda.
+			} else {
+				L.agregarFinal(A.getDatoRaiz() * (-1));
+				this.caminoRecorrido(L, A.getHijoIzquierdo(), valor);
+				}
+		//retorno la lista generada
+		return L;
+		}
+	}
