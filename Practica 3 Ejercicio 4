@@ -1,0 +1,23 @@
+public class RedBinariaLlena {
+	
+	
+	//Utilizo la estrategia de profundidad del método ContarHojas() del ejerccicio 2
+	// inciso A.
+
+	public int retardoDeEnvio(ArbolBinario<Integer> A){
+		//pregunto si el nodo actual no es vacío
+		if(!A.esVacio()){
+
+			if(A.esHoja()){
+				return 0;
+			}
+			else {
+				return 1;
+				}
+		}
+		//cuando salga de las hojas, sumará las hojas del hijo izquierdo con las hojas del hijo derecho.
+		//cuando llega a la raiz, tiene con que el subarbol izquierdo tiene x cantidad de hojas, y las suma
+		//con las x hojas del subarbol derecho
+		return retardoDeEnvio(A.getHijoIzquierdo()) + retardoDeEnvio(A.getHijoDerecho());
+				
+	}
