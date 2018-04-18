@@ -1,0 +1,251 @@
+//====================================================================================
+//========== EXPLICACIÓN RECORRIDO POR NIVELES DE UN ARBOL, USANDO UNA COLA ==========
+//====================================================================================
+
+//Para recorrer un arbol por niveles, guardamos todos los elementos de cada nivel en una cola.
+//¿Como funciona?, agrego una marca (un null) a la cola cada vez que detecto un salto de nivel.
+//a continuación veremos como funciona cada procedimiento, paso a paso.
+
+
+//Código:
+
+public class ArbolBinario<T> {
+	private NodoBinario<T> raiz;
+	. . .
+	public void recorridoPorNiveles(ArbolBinario<Integer> arbol) { 					// (1)
+		ColaGenerica<ArbolBinario<T>> cola = new ColaGenerica<ArbolBinario<T>>();	// (2)
+		cola.encolar(this);															// (3)
+		cola.encolar(null);															// (4)
+		while (!cola.esVacia()) {													// (5)
+			arbol = cola.desencolar();												// (6)
+			if (arbol != null) {													// (7)
+				System.out.println(arbol.getDatoRaiz());							// (8)
+				if (!arbol.getHijoIzquierdo().esVacio()){							// (9)
+					cola.encolar(arbol.getHijoIzquierdo());
+				}
+				if (!arbol.getHijoDerecho().esVacio()){								// (10)
+					cola.encolar(arbol.getHijoDerecho());
+				}
+			} else	{																//(11)
+				if (!cola.esVacia()) {
+					System.out.println();
+					cola.encolar(null);
+				}
+			}	
+		}
+ 	}
+}
+
+//================================EXPLICACIÓN================================================
+//Supongamos que queremos recorrer el siguiente Arbol binario:
+//			  ___
+//			 | 1 |
+//		   /      \
+		 _|_ 	  _|_
+//		| 2 |	 | 5 |
+//		/   \    /   \
+//	   |	|   |     |
+//	  |3|  |4| 	|6|  |7|
+
+
+// (1): Recibo por parámetro un arbol de enteros con elementos.
+//												 _____________
+// (2): Creo una cola que guardará arboles. -->  |  |  |  |  |.									___________
+// (3): guardo en la primer posición de la cola, el ARBOL con su elemento raiz que es 1.	--> | 1 | | | |.
+// (4): Encolo en la siguiente posición un null, esto lo hago solo la primera vez, porque sé que el arbol en el primer nivel 
+//		sólo tiene la raiz, es decir 1 elemento. --> | 1 | null | | | |. ahora el null representa una marca cada vez que cambie de nivel.
+// (5): mientras la cola no se vacíe...
+// (6): guardo en la variable arbol, el primer elemento de la cola, que es un arbol con su raiz 1, y a su vez borro ese elemento de la cola.
+//      -->  |X|null| | | |. el primer elemento de la cola se borró, y usaremos la marca "X" para referenciar elementos desencolados.
+// (7): si el arbol no es null, es decir, todavía no detecte un cambio de nivel...
+// (8): imprimo la raiz del arbol. imprime: 1. (su elemento de la raiz).
+// (9): si el hijo izquierdo del arbol que poseo, no es vacío (tiene hijo izquierdo con elementos), pongo en la cola ese hijo izquierdo.
+//		vemos que nuestro arbol SI tiene hijo izquierdo y es un subarbol con la raiz con valor 2!. ingreso ese subarbol con raiz 2.
+//		--> |X|null|2|  |  |.
+// (10): si el hijo derecho de nuestro arbol (el de raiz 1) tiene hijo derecho, pongo en la cola ese hijo derecho. Vemos que nuestro arbol
+//		 SI tiene hijo derecho y es un subarbol con raiz 5. --> |X|null|2|5|  |  |.
+// (11): sinó (el arbol que tenemos es null, es decir detectó un cambio de nivel), en ese caso imprimo un salto de línea y agrego un null a la cola
+//		 entonces, cuando detecto un null, lo desencolo y agrego otro null al final de la cola.
+
+
+
+
+//	     	- - - - - SEGUNDA PASADA DENTRO DEL WHILE - - - - - - -                 
+
+public class ArbolBinario<T> {
+	private NodoBinario<T> raiz;
+	. . .
+	public void recorridoPorNiveles(ArbolBinario<Integer> arbol) { 					
+		ColaGenerica<ArbolBinario<T>> cola = new ColaGenerica<ArbolBinario<T>>();	
+		cola.encolar(this);															
+		cola.encolar(null);															
+		while (!cola.esVacia()) {													
+			arbol = cola.desencolar();												// (12)
+			if (arbol != null) {													// (13)
+				System.out.println(arbol.getDatoRaiz());							
+				if (!arbol.getHijoIzquierdo().esVacio()){							
+					cola.encolar(arbol.getHijoIzquierdo());
+				}
+				if (!arbol.getHijoDerecho().esVacio()){								
+					cola.encolar(arbol.getHijoDerecho());
+				}
+			} else	{																// (14)
+				if (!cola.esVacia()) {
+					System.out.println();
+					cola.encolar(null);
+				}
+			}	
+		}
+ 	}
+}
+
+//(12): Ahora, arbol es la primera posición de la cola de izquierda a derecha (así funciona la cola).
+//		-->  |X|null|2|5| |. Arbol es igual a null, y borramos (DESENCOLAMOS enrealidad) a null de la cola
+//		-->  |X|X|2|5| | |.
+// (13): pregunto si arbol no es null....vemos que ahora nuestra variable SI es null, así que no entra en esta condición.
+// (14): cómo nuestro arbol es null, entra en el else, imprimo un salto de línea y agrega un null al final de la cola,
+//		 indicando otro cambio de nivel mas adelante.
+//       nuestra cola ahora será -->  |X|X|2|5|null| | |.
+
+
+
+
+
+//		  - - - - - TERCERA PASADA DENTRO DEL WHILE - - - - - - -    
+
+
+          
+
+public class ArbolBinario<T> {
+	private NodoBinario<T> raiz;
+	. . .
+	public void recorridoPorNiveles(ArbolBinario<Integer> arbol) { 					
+		ColaGenerica<ArbolBinario<T>> cola = new ColaGenerica<ArbolBinario<T>>();	
+		cola.encolar(this);															
+		cola.encolar(null);															
+		while (!cola.esVacia()) {													
+			arbol = cola.desencolar();												// (15)
+			if (arbol != null) {													// (16)
+				System.out.println(arbol.getDatoRaiz());							// (17)
+				if (!arbol.getHijoIzquierdo().esVacio()){							// (18)
+					cola.encolar(arbol.getHijoIzquierdo());
+				}
+				if (!arbol.getHijoDerecho().esVacio()){								// (19)
+					cola.encolar(arbol.getHijoDerecho());
+				}
+			} else	{																// (20)
+				if (!cola.esVacia()) {
+					System.out.println();
+					cola.encolar(null);
+				}
+			}	
+		}
+ 	}
+}
+
+// (15): arbol es el siguiente elemento dentro de la cola, que debemos desencolar. -->  |X|X|2|5|null| | |.
+// 		 arbol es ahora el subarbol con raiz 2. Desencolo ese subarbol de la cola. -->  |X|X|X|5|null| | |.
+// (16): pregunto si arbol no es null...Entro en ésta condicion porque arbol es un subarbol de raiz 2.
+// (17): Imprimo el dato de la raiz del arbol que poseo. Imprimo: 2.
+// (18): si el subarbol que poseo tiene hijo izquierdo, lo encolo en la cola. Vemos que el subarbol con raiz 2 SI tiene
+//		 hijo izquierdo, y es un subarbol con raiz 3. Encolo el subarbol de raiz 3. La cola será ahora -- >  |X|X|X|5|null|3| | |.
+// (19): si el subarbol que poseo (el de raiz 2) tiene hijo derecho, lo encolo en la cola. Vemos que el subarbol con raiz 2 SI tiene
+//		 hijo derecho, y es un subarbol con raiz 4. Encolo el subarbol con raiz 4 en la cola. La cola será --> |X|X|X|5|null|3|4| |.
+// (20): sinó...(si el arbol que poseemos actualmente, es null). no entramos en ésta condición.
+
+
+
+
+
+//		- - - - - CUARTA PASADA DENTRO DEL WHILE - - - - - - -  
+
+
+             
+
+public class ArbolBinario<T> {
+	private NodoBinario<T> raiz;
+	. . .
+	public void recorridoPorNiveles(ArbolBinario<Integer> arbol) { 					
+		ColaGenerica<ArbolBinario<T>> cola = new ColaGenerica<ArbolBinario<T>>();	
+		cola.encolar(this);															
+		cola.encolar(null);															
+		while (!cola.esVacia()) {													
+			arbol = cola.desencolar();												// (21)
+			if (arbol != null) {													// (22)
+				System.out.println(arbol.getDatoRaiz());							// (23)
+				if (!arbol.getHijoIzquierdo().esVacio()){							// (24)
+					cola.encolar(arbol.getHijoIzquierdo());
+				}
+				if (!arbol.getHijoDerecho().esVacio()){								// (25)
+					cola.encolar(arbol.getHijoDerecho());
+				}
+			} else	{																// (26)
+				if (!cola.esVacia()) {
+					System.out.println();
+					cola.encolar(null);
+				}
+			}	
+		}
+ 	}
+}
+
+// (21): arbol será el siguiente elemento de la cola, que debemos desencolar de ella. La cola es hasta ahora --> |X|X|X|5|null|3|4| |.
+//		 entonces arbol será un subarbol con raiz 5. Desencolo ese elemento y nuestra cola quedará así --> |X|X|X|X|null|3|4| |
+// (22): Si arbol no es null...Entro en esta condición porque arbol es un subarbol con raiz 5.
+// (23): Imprimo el dato de la raiz de nuestro arbol, (Imprimo 5).
+// (24): Si nuestro subarbol tiene hijo izquierdo lo encolo. Tiene hijo izquierdo y es un subarbol con raiz 6. Encolo subarbol izquierdo a la
+//		 cola --> |X|X|X|X|null|3|4|6| |.
+// (25): Si nuestro subarbol tiene hijo derecho lo encolo. Nuestro subarbol tiene un hijo derecho y es un subarbol con raiz 7.
+//		 Encolo el subarbol derecho a la cola. --> |X|X|X|X|null|3|4|6|7|.
+// (26): Pregunto si arbol es null. No entro a esta condición porque arbol actualmente es un subarbol de raiz 5.
+
+
+
+
+
+
+
+//		- - - - - QUINTA PASADA DENTRO DEL WHILE - - - - - - -    
+
+
+           
+
+public class ArbolBinario<T> {
+	private NodoBinario<T> raiz;
+	. . .
+	public void recorridoPorNiveles(ArbolBinario<Integer> arbol) { 					
+		ColaGenerica<ArbolBinario<T>> cola = new ColaGenerica<ArbolBinario<T>>();	
+		cola.encolar(this);															
+		cola.encolar(null);															
+		while (!cola.esVacia()) {													
+			arbol = cola.desencolar();												// (27)
+			if (arbol != null) {													// (28)
+				System.out.println(arbol.getDatoRaiz());							
+				if (!arbol.getHijoIzquierdo().esVacio()){							
+					cola.encolar(arbol.getHijoIzquierdo());
+				}
+				if (!arbol.getHijoDerecho().esVacio()){								
+					cola.encolar(arbol.getHijoDerecho());
+				}
+			} else	{																// (29)
+				if (!cola.esVacia()) {
+					System.out.println();
+					cola.encolar(null);
+				}
+			}	
+		}
+ 	}
+}
+
+// (27): ARBOL = siguiente elemento de la cola, que debemos desencolar. ARBOL = null. desencolamos el null y nuestra cola quedará
+//		 --> |X|X|X|X|X|3|4|6|7|.
+// (28): pregunto si arbol no es null. Nuestro arbol si es null así que no entramos en ésta condición.
+// (29): como nuestro arbol es null, éntro en esta condición, pregunto si la cola sigue teniendo elementos y como los tiene
+//	     imprimo un salto de línea, y encolo un null. Nuestra cola será --> |X|X|X|X|X|3|4|6|7|null|.
+
+
+
+
+//		- - - - - SEXTA PASADA DENTRO DEL WHILE - - - - - - -               
+
+// Aquí solo resta imprimir el último nivel del arbol.
